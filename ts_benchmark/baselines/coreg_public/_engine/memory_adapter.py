@@ -122,7 +122,7 @@ MODEL_HYPER_PARAMS = {
     "memory_encoder_hidden": 64,
     "memory_gate_hidden": 128,
     "memory_fusion_hidden": 128,
-    "memory_topk": 50,
+    "memory_topk": 10,
     "memory_gmb_size": 1000,
     "memory_pcl_epochs": 80,
     "memory_pcl_batch_size": 256,

@@ -83,7 +83,7 @@ class MultivariateMemoryBranch(nn.Module):
         self.embedding_dim = int(getattr(configs, "memory_embedding_dim", 16))
         self.encoder_hidden = int(getattr(configs, "memory_encoder_hidden", 64))
         self.gate_hidden = int(getattr(configs, "memory_gate_hidden", 128))
-        self.topk = int(getattr(configs, "memory_topk", 50))
+        self.topk = int(getattr(configs, "memory_topk", 10))
         self.gmb_size = int(getattr(configs, "memory_gmb_size", 1000))
         self.pcl_epochs = int(getattr(configs, "memory_pcl_epochs", 80))
         self.pcl_batch_size = int(getattr(configs, "memory_pcl_batch_size", 256))
@@ -1079,7 +1079,7 @@ class IndependentMemoryBranch(nn.Module):
     def __init__(self, configs):
         super().__init__()
         self.channels = int(configs.enc_in)
-        self.topk = int(getattr(configs, "memory_topk", 50))
+        self.topk = int(getattr(configs, "memory_topk", 10))
         branches = []
         for _ in range(self.channels):
             channel_config = copy.copy(configs)
