@@ -546,14 +546,14 @@ class MultiscaleRetrievalGeometryBranch(GeometryBranch):
 
     def __init__(self, configs):
         super().__init__(configs)
-        self.moving_average_kernel = int(getattr(configs, "coreg_moving_average_kernel", 0))
+        self.moving_average_kernel = int(getattr(configs, "coreg_moving_average_kernel", 25))
         self.reliability_enabled = bool(getattr(configs, "coreg_reliability_enabled", False))
         self.reliability_strength = float(getattr(configs, "coreg_reliability_strength", 1.0))
         if self.reliability_strength < 0:
             raise ValueError("reliability strength must be nonnegative")
-        if self.moving_average_kernel and (self.moving_average_kernel < 1 or self.moving_average_kernel % 2 == 0):
+        if self.moving_average_kernel < 1 or self.moving_average_kernel % 2 == 0:
             raise ValueError("moving average kernel must be positive and odd")
-        factors = (2, 1) if self.moving_average_kernel else getattr(configs, "Geometry_multiscale_factors", (4, 2, 1))
+        factors = (2, 1)
         if isinstance(factors, str):
             factors = tuple(int(value) for value in factors.split(","))
         self.scale_factors = tuple(
@@ -782,30 +782,13 @@ class MultiscaleRetrievalGeometryBranch(GeometryBranch):
         self._retrieval_trace_batch += 1
 
     def _query_views(self, x_norm: torch.Tensor) -> torch.Tensor:
-        if self.moving_average_kernel:
-            return moving_average_components(x_norm, self.moving_average_kernel)
-        if self.multiscale_mode == "parallel_mean":
-            return torch.stack(
-                [block_mean_repeat(x_norm, factor) for factor in self.scale_factors]
-            )
-        return temporal_laplacian(x_norm, self.scale_factors)
+        return moving_average_components(x_norm, self.moving_average_kernel)
 
     def _future_views(self, future: torch.Tensor) -> torch.Tensor:
-        if self.moving_average_kernel:
-            return moving_average_components(future, self.moving_average_kernel)
-        if self.multiscale_mode == "parallel_mean":
-            return torch.stack(
-                [block_mean_repeat(future, factor) for factor in self.scale_factors]
-            )
-        return temporal_laplacian(future, self.scale_factors)
+        return moving_average_components(future, self.moving_average_kernel)
 
     def _future_view_at(self, future: torch.Tensor, scale: int) -> torch.Tensor:
-        """Compute exactly the candidate band required by one scale retrieval."""
-        if self.moving_average_kernel:
-            return moving_average_components(future, self.moving_average_kernel)[scale]
-        if self.multiscale_mode == "parallel_mean":
-            return block_mean_repeat(future, self.scale_factors[scale])
-        return temporal_laplacian_component(future, self.scale_factors, scale)
+        return moving_average_components(future, self.moving_average_kernel)[scale]
 
     @staticmethod
     def _roll_keys_within_channel(keys: torch.Tensor) -> torch.Tensor:

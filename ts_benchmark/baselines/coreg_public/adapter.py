@@ -21,9 +21,11 @@ class _AlignedCoReGMixin:
     MODEL_CLASS = MultiscaleRetrievalGeometryModel
 
     def __init__(self, **kwargs):
-        kwargs.setdefault("Geometry_multiscale_mode", "cross_variable_dual_path_reproduced")
+        kwargs["Geometry_multiscale_mode"] = "cross_variable_dual_path_reproduced"
         kwargs.setdefault("coreg_reliability_enabled", True)
-        kwargs.setdefault("Geometry_multiscale_factors", (4, 2, 1))
+        kwargs.setdefault("coreg_moving_average_kernel", 25)
+        if int(kwargs["coreg_moving_average_kernel"]) < 1 or int(kwargs["coreg_moving_average_kernel"]) % 2 == 0:
+            raise ValueError("moving average kernel must be positive and odd")
         kwargs.setdefault("memory_variant", "same_channel")
         super().__init__(**kwargs)
 

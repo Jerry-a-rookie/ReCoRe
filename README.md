@@ -10,7 +10,7 @@ Install PyTorch and the dependencies in `requirements.txt` and place the forecas
 
 The public adapters are available from `ts_benchmark.baselines.coreg_public`: `DLinearCoReG`, `iTransformerCoReG`, `PatchMLPCoReG`, `xPatchCoReG`, `AmplifierCoReG`, and `MICNCoReG`.
 
-Reliability-aware adjustment is enabled by default. Set `coreg_reliability_enabled=False` to disable it. To use trend--residual decomposition, set `coreg_moving_average_kernel` to a positive odd value. The default kernel is 0, which uses the existing multiscale path. Set the remaining hyperparameters according to the experiment configuration.
+ReCoRe uses trend--residual decomposition and reliability-aware adjustment. The moving-average window defaults to 25 and can be set with `coreg_moving_average_kernel` to another positive odd integer.
 
 Run experiments using `scripts/run_benchmark.py`. The server configurations and checkpoints used for the paper are not included in this snapshot.
 
