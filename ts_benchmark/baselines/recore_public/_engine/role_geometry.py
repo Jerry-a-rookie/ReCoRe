@@ -14,11 +14,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ts_benchmark.baselines.coreg_public._engine.memory_branch import _normalize_series
-from ts_benchmark.baselines.coreg_public._engine.geometry_branch import GeometryBranch
-from ts_benchmark.baselines.coreg_public._engine.window_sampling import nested_window_indices
-from ts_benchmark.baselines.coreg_public._engine.geometry_model import GeometryModel, GeometryLearnedFusion
-from ts_benchmark.baselines.coreg_public._engine.stablerel_controls import CONTROLS as RELATION_CONTROLS, build_relation
+from ts_benchmark.baselines.recore_public._engine.memory_branch import _normalize_series
+from ts_benchmark.baselines.recore_public._engine.geometry_branch import GeometryBranch
+from ts_benchmark.baselines.recore_public._engine.window_sampling import nested_window_indices
+from ts_benchmark.baselines.recore_public._engine.geometry_model import GeometryModel, GeometryLearnedFusion
+from ts_benchmark.baselines.recore_public._engine.stablerel_controls import CONTROLS as RELATION_CONTROLS, build_relation
 
 
 logger = logging.getLogger(__name__)

@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ts_benchmark.baselines.coreg_public._engine.window_sampling import (
+from ts_benchmark.baselines.recore_public._engine.window_sampling import (
     nested_window_indices,
     window_indices_sha256,
 )
@@ -133,7 +133,7 @@ class MultivariateMemoryBranch(nn.Module):
         
         self._control_rng = torch.Generator(device="cpu")
         self._control_rng.manual_seed(self.seed)
-        self._retrieval_trace_dir = getattr(configs, "coreg_retrieval_trace_dir", "")
+        self._retrieval_trace_dir = getattr(configs, "recore_retrieval_trace_dir", "")
         self._retrieval_trace_batch = 0
         self.train_window_ratio = float(
             getattr(configs, "memory_train_window_ratio", 1.0)

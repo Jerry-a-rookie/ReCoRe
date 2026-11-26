@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from ts_benchmark.baselines.coreg_public._engine.memory_branch import (
+from ts_benchmark.baselines.recore_public._engine.memory_branch import (
     IndependentMemoryBranch,
     MultivariateMemoryBranch,
 )

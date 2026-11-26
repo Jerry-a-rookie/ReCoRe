@@ -3,11 +3,12 @@ from __future__ import annotations
 import torch
 import torch.nn.functional as F
 
-from ts_benchmark.baselines.coreg_public._engine.memory_branch import (
+from ts_benchmark.baselines.recore_public._engine.memory_branch_base import (
+    IndependentMemoryBranch,
     MultivariateMemoryBranch,
     _normalize_series,
 )
-from ts_benchmark.baselines.coreg_public._engine.stage_profile import stage
+from ts_benchmark.baselines.recore_public._engine.stage_profile import stage
 
 
 class GeometryBranch(MultivariateMemoryBranch):
@@ -19,9 +20,9 @@ class GeometryBranch(MultivariateMemoryBranch):
         configs.memory_confidence_execution = "factorized"
         configs.memory_temporal_coverage_anchors = 200
         super().__init__(configs)
-        self.stream_rows = int(getattr(configs, "coreg_stream_rows", 4096))
+        self.stream_rows = int(getattr(configs, "Geometry_stream_rows", 4096))
         if self.stream_rows <= 0:
-            raise ValueError("coreg_stream_rows must be positive")
+            raise ValueError("Geometry_stream_rows must be positive")
         self._streaming_calls = 0
         self._streaming_max_rows = 0
 
@@ -61,7 +62,7 @@ class GeometryBranch(MultivariateMemoryBranch):
                 similarity, self.topk, dim=1
             )
             if not bool(torch.isfinite(topk_similarity).all()):
-                raise RuntimeError("CoReG memory does not contain enough neighbors.")
+                raise RuntimeError("Geometry memory does not contain enough neighbors.")
             query_channels = torch.arange(channels, device=x.device)
             query_channels = query_channels.unsqueeze(0).expand(
                 batch_size, -1
@@ -154,16 +155,18 @@ class GeometryBranch(MultivariateMemoryBranch):
         summary = super().get_memory_summary()
         summary.update(
             {
-                "architecture": "CoReG",
-                "coreg_retrieval_scope": "intra_channel",
-                "coreg_memory_selection": "temporal_stratified_predictive_coreset",
-                "coreg_confidence_execution": "exact_factorized_full",
-                "coreg_future_execution": "exact_streaming_query_rows",
-                "coreg_stream_rows": self.stream_rows,
-                "coreg_streaming_calls": self._streaming_calls,
-                "coreg_streaming_max_rows": self._streaming_max_rows,
+                "architecture": "Geometry",
+                "Geometry_retrieval_scope": "intra_channel",
+                "Geometry_memory_selection": "temporal_stratified_predictive_coreset",
+                "Geometry_confidence_execution": "exact_factorized_full",
+                "Geometry_future_execution": "exact_streaming_query_rows",
+                "Geometry_stream_rows": self.stream_rows,
+                "Geometry_streaming_calls": self._streaming_calls,
+                "Geometry_streaming_max_rows": self._streaming_max_rows,
             }
         )
         return summary
+
+
 
 

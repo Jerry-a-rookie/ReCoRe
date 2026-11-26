@@ -3,9 +3,9 @@ import torch
 import os
 from pathlib import Path
 
-from ts_benchmark.baselines.coreg_public import DLinearCoReG
-from ts_benchmark.baselines.coreg_public._engine.role_geometry import RelationalPredictiveContrastGeometryBranch
-from ts_benchmark.baselines.coreg_public._engine.memory_branch_base import _normalize_series
+from ts_benchmark.baselines.recore_public import DLinearReCoRe
+from ts_benchmark.baselines.recore_public._engine.role_geometry import RelationalPredictiveContrastGeometryBranch
+from ts_benchmark.baselines.recore_public._engine.memory_branch_base import _normalize_series
 
 
 def test_relational_memory_fresh_and_cached_match(request):
@@ -18,7 +18,7 @@ def test_relational_memory_fresh_and_cached_match(request):
     steps[:, 1] = 0.8 * steps[:, 0] + 0.2 * steps[:, 1]
     steps[:, 2] = -0.6 * steps[:, 0] + 0.4 * steps[:, 2]
     values = np.cumsum(steps, axis=0).astype(np.float32)
-    config = DLinearCoReG(seq_len=24, pred_len=8, norm=True,
+    config = DLinearReCoRe(seq_len=24, pred_len=8, norm=True,
         memory_cache_root=str(tmp_path), memory_gmb_size=240, memory_topk=4,
         memory_pcl_epochs=1, memory_pcl_batch_size=64,
         memory_cluster_iterations=2, memory_encode_batch_size=31,

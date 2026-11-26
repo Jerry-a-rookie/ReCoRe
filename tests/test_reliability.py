@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import torch
 
-path = Path(__file__).resolve().parents[1] / 'ts_benchmark/baselines/coreg_public/_engine/reliability.py'
+path = Path(__file__).resolve().parents[1] / 'ts_benchmark/baselines/recore_public/_engine/reliability.py'
 spec = importlib.util.spec_from_file_location('reliability', path)
 m = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)

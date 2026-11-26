@@ -1,4 +1,4 @@
-"""Stable public contracts for the CoReG module."""
+"""Stable public contracts for the ReCoRe module."""
 from __future__ import annotations
 
 from typing import Optional, Protocol, runtime_checkable
@@ -10,7 +10,7 @@ from torch import nn
 
 @runtime_checkable
 class BackboneForecastAdapter(Protocol):
-    """Minimal interface CoReG needs from a forecasting Backbone."""
+    """Minimal interface ReCoRe needs from a forecasting Backbone."""
 
     def fit(self, train_valid_data, train_ratio_in_tv: float = 1.0) -> None:
         ...
@@ -29,7 +29,7 @@ class BackboneForecastAdapter(Protocol):
         ...
 
 
-class CoReGModule(nn.Module):
+class ReCoReModule(nn.Module):
     """Public module shell for geometry-enhanced forecasting.
 
     The concrete implementation will own TimeGeo, StableRel, RoleGeo,

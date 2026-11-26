@@ -9,10 +9,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from ts_benchmark.baselines.coreg_public._engine.memory_branch import _normalize_series
-from ts_benchmark.baselines.coreg_public._engine.geometry_branch import GeometryBranch
-from ts_benchmark.baselines.coreg_public._engine.geometry_model import GeometryModel
-from ts_benchmark.baselines.coreg_public._engine.stage_profile import stage
+from ts_benchmark.baselines.recore_public._engine.memory_branch import _normalize_series
+from ts_benchmark.baselines.recore_public._engine.geometry_branch import GeometryBranch
+from ts_benchmark.baselines.recore_public._engine.geometry_model import GeometryModel
+from ts_benchmark.baselines.recore_public._engine.stage_profile import stage
 from .reliability import moving_average_components, reliability as candidate_reliability
 
 
@@ -530,7 +530,7 @@ class DualPathFusion(nn.Module):
 
     def __init__(self, topk: int, hidden_dim: int, pred_len: int):
         super().__init__()
-        from ts_benchmark.baselines.coreg_public._engine.geometry_model import GeometryLearnedFusion
+        from ts_benchmark.baselines.recore_public._engine.geometry_model import GeometryLearnedFusion
 
         self.multiscale = GeometryLearnedFusion(topk, hidden_dim)
         self.relational = GeometryLearnedFusion(topk, hidden_dim)
@@ -546,9 +546,9 @@ class MultiscaleRetrievalGeometryBranch(GeometryBranch):
 
     def __init__(self, configs):
         super().__init__(configs)
-        self.moving_average_kernel = int(getattr(configs, "coreg_moving_average_kernel", 25))
-        self.reliability_enabled = bool(getattr(configs, "coreg_reliability_enabled", False))
-        self.reliability_strength = float(getattr(configs, "coreg_reliability_strength", 1.0))
+        self.moving_average_kernel = int(getattr(configs, "recore_moving_average_kernel", 25))
+        self.reliability_enabled = bool(getattr(configs, "recore_reliability_enabled", False))
+        self.reliability_strength = float(getattr(configs, "recore_reliability_strength", 1.0))
         if self.reliability_strength < 0:
             raise ValueError("reliability strength must be nonnegative")
         if self.moving_average_kernel < 1 or self.moving_average_kernel % 2 == 0:
@@ -719,7 +719,7 @@ class MultiscaleRetrievalGeometryBranch(GeometryBranch):
                 "cross_variable_dual_path_reproduced"
             )
         ):
-            from ts_benchmark.baselines.coreg_public._engine.role_geometry import (
+            from ts_benchmark.baselines.recore_public._engine.role_geometry import (
                 RelationalPredictiveContrastGeometryBranch,
             )
 
@@ -751,7 +751,7 @@ class MultiscaleRetrievalGeometryBranch(GeometryBranch):
             )
         self._scale_encoder_cache_used = False
         self._scale_encoder_losses: list[float] = []
-        self._retrieval_trace_dir = getattr(configs, "coreg_retrieval_trace_dir", "")
+        self._retrieval_trace_dir = getattr(configs, "recore_retrieval_trace_dir", "")
         self._retrieval_trace_batch = 0
 
     def _save_retrieval_trace(self, x_enc, scale_indices, scale_scores, query_starts=None) -> None:
@@ -1002,7 +1002,7 @@ class MultiscaleRetrievalGeometryBranch(GeometryBranch):
         self, values: np.ndarray, device: torch.device
     ) -> None:
         """Train-time multivariate supervision with target-local inference."""
-        from ts_benchmark.baselines.coreg_public._engine.role_geometry import (
+        from ts_benchmark.baselines.recore_public._engine.role_geometry import (
             RelationalPredictiveContrastGeometryBranch,
         )
 
@@ -2262,7 +2262,7 @@ class MultiscaleRetrievalGeometryModel(GeometryModel):
         relational_reference = None
         requested_mode = str(getattr(configs, "Geometry_multiscale_mode", "laplacian"))
         if requested_mode.startswith("cross_variable_dual_path_reproduced"):
-            from ts_benchmark.baselines.coreg_public._engine.role_geometry import (
+            from ts_benchmark.baselines.recore_public._engine.role_geometry import (
                 RelationalPredictiveContrastGeometryModel,
             )
 
@@ -2355,13 +2355,13 @@ class MultiscaleRetrievalGeometryModel(GeometryModel):
         self._tri_original_weight_sum = 0.0
         self._tri_relational_weight_sum = 0.0
         self._tri_weight_count = 0
-        self._weight_trace_dir = getattr(configs, "coreg_weight_trace_dir", "")
+        self._weight_trace_dir = getattr(configs, "recore_weight_trace_dir", "")
         self._weight_trace_batch = 0
-        self._retrieval_trace_dir = getattr(configs, "coreg_retrieval_trace_dir", "")
-        self._retrieval_trace_dir = getattr(configs, "coreg_retrieval_trace_dir", "")
+        self._retrieval_trace_dir = getattr(configs, "recore_retrieval_trace_dir", "")
+        self._retrieval_trace_dir = getattr(configs, "recore_retrieval_trace_dir", "")
         self._retrieval_trace_batch = 0
         self._retrieval_trace_max_rows = int(
-            getattr(configs, "coreg_retrieval_trace_max_rows", 256)
+            getattr(configs, "recore_retrieval_trace_max_rows", 256)
         )
 
     def _save_retrieval_trace(self, x_enc, scale_indices, scale_scores) -> None:

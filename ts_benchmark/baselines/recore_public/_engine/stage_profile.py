@@ -13,15 +13,15 @@ _event_records: dict[str, list[tuple[torch.cuda.Event, torch.cuda.Event]]] = def
 
 
 def enabled() -> bool:
-    return os.environ.get("COREG_PROFILE_STAGES") == "1"
+    return os.environ.get("RECORE_PROFILE_STAGES") == "1"
 
 
 def memory_mode() -> bool:
-    return os.environ.get("COREG_PROFILE_STAGE_MEMORY") == "1"
+    return os.environ.get("RECORE_PROFILE_STAGE_MEMORY") == "1"
 
 
 def event_mode() -> bool:
-    return os.environ.get("COREG_PROFILE_STAGE_EVENTS") == "1"
+    return os.environ.get("RECORE_PROFILE_STAGE_EVENTS") == "1"
 
 
 @contextlib.contextmanager

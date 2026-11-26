@@ -1,11 +1,11 @@
-"""Verify the public CoReG package is self-contained."""
+"""Verify the public ReCoRe package is self-contained."""
 from __future__ import annotations
 
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC = ROOT / "ts_benchmark" / "baselines" / "coreg_public"
+PUBLIC = ROOT / "ts_benchmark" / "baselines" / "recore_public"
 FORBIDDEN = ("pri" + "sm", "pf" + "rp")
 
 
@@ -17,8 +17,8 @@ def main() -> int:
             if token in text:
                 violations.append(f"{path}: {token}")
     if violations:
-        raise SystemExit("Public CoReG naming audit failed:\n" + "\n".join(violations))
-    print(f"Public CoReG naming audit passed: {PUBLIC}")
+        raise SystemExit("Public ReCoRe naming audit failed:\n" + "\n".join(violations))
+    print(f"Public ReCoRe naming audit passed: {PUBLIC}")
     return 0
 
 

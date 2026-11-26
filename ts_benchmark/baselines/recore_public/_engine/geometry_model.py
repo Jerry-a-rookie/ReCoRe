@@ -3,12 +3,12 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from ts_benchmark.baselines.coreg_public._engine.memory_model import DLinearMemoryModel
-from ts_benchmark.baselines.coreg_public._engine.geometry_branch import GeometryBranch
+from ts_benchmark.baselines.recore_public._engine.memory_model import DLinearMemoryModel
+from ts_benchmark.baselines.recore_public._engine.geometry_branch import GeometryBranch
 
 
 class GeometryLearnedFusion(nn.Module):
-    """Per-sample, per-channel learned fusion for the final CoReG model."""
+    """Per-sample, per-channel learned fusion for the final ReCoRe model."""
 
     def __init__(self, topk: int, hidden_dim: int):
         super().__init__()
@@ -58,8 +58,8 @@ class GeometryModel(DLinearMemoryModel):
 
     def get_debug_summary(self) -> dict:
         summary = super().get_debug_summary()
-        summary["architecture"] = "CoReG"
-        summary["coreg_fusion"] = "learned"
+        summary["architecture"] = "ReCoRe"
+        summary["recore_fusion"] = "learned"
         return summary
 
 

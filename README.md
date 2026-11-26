@@ -4,7 +4,7 @@ ReCoRe is a retrieval-augmented framework for multivariate time series forecasti
 
 ## Code and supplementary material
 
-The implementation is in `ts_benchmark/baselines/coreg_public/`. The directory and adapter class names retain the earlier `CoReG` interface name for compatibility; the ReCoRe configuration and its public adapters use this same implementation. The available adapters are `DLinearCoReG`, `iTransformerCoReG`, `PatchMLPCoReG`, `xPatchCoReG`, `AmplifierCoReG`, and `MICNCoReG`.
+The implementation is in `ts_benchmark/baselines/recore_public/`. The available adapters are `DLinearReCoRe`, `iTransformerReCoRe`, `PatchMLPReCoRe`, `xPatchReCoRe`, `AmplifierReCoRe`, and `MICNReCoRe`.
 
 The [supplementary material](supplement/supplement.pdf) describes the method, datasets, reported experimental settings, additional results, and selected implementation excerpts.
 

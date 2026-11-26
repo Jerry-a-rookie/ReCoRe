@@ -478,7 +478,7 @@ class RollingForecast(ForecastingStrategy):
             covariates4batch,
         )
 
-        spool_root = getattr(getattr(model, "config", None), "coreg_spool_root", None)
+        spool_root = getattr(getattr(model, "config", None), "recore_spool_root", None)
         prediction_root = (Path(spool_root) / "rolling_predictions"
                            if spool_root else Path(tempfile.mkdtemp(prefix="tfb_rolling_predictions_")))
         prediction_root.mkdir(parents=True, exist_ok=True)

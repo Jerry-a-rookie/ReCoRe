@@ -21,8 +21,8 @@ from torch import optim
 from torch.utils.data import DataLoader, Dataset
 
 from ts_benchmark.baselines.amplifier.models.amplifier_model import AmplifierModel
-from ts_benchmark.baselines.coreg_public._engine.memory_model import DLinearMemoryModel
-from ts_benchmark.baselines.coreg_public._engine.window_sampling import nested_window_indices
+from ts_benchmark.baselines.recore_public._engine.memory_model import DLinearMemoryModel
+from ts_benchmark.baselines.recore_public._engine.window_sampling import nested_window_indices
 from ts_benchmark.baselines.time_series_library.adapters_for_transformers import (
     MODEL_HYPER_PARAMS as DLINEAR_ADAPTER_HYPER_PARAMS,
 )
@@ -388,7 +388,7 @@ class DLinearMemory(ModelBase):
             if (
                 name.startswith("memory_")
                 or name.startswith("Geometry_multiscale_")
-                or name.startswith("coreg_")
+                or name.startswith("recore_")
             ) and name not in {
                 "memory_base_batch_size",
                 "memory_seed",
@@ -428,7 +428,7 @@ class DLinearMemory(ModelBase):
         Those controls must not prevent Exact Geometry and a Geometry variant from
         sharing the same frozen Backbone.
         """
-        ignored_prefixes = ("Geometry_multiscale_", "coreg_")
+        ignored_prefixes = ("Geometry_multiscale_", "recore_")
         ignored_names = {
             "memory_seed",
             
@@ -1189,7 +1189,7 @@ class DLinearMemory(ModelBase):
         if not self.config.memory_collect_branch_debug:
             self._debug_predictions = {}
             return
-        configured_root = getattr(self.config, "coreg_spool_root", None)
+        configured_root = getattr(self.config, "recore_spool_root", None)
         root = (Path(configured_root) / "memory_debug" if configured_root
                 else Path(tempfile.mkdtemp(prefix="tfb_memory_debug_")))
         root.mkdir(parents=True, exist_ok=True)
@@ -1236,7 +1236,7 @@ class DLinearMemory(ModelBase):
         into the run-owned artifact directory preserves every evaluated window
         without materializing all branch predictions in Python memory.
         """
-        configured_root = getattr(self.config, "coreg_window_debug_root", None)
+        configured_root = getattr(self.config, "recore_window_debug_root", None)
         if not configured_root:
             return
         root = Path(configured_root)

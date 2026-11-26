@@ -16,7 +16,7 @@ def nested_window_indices(
     if total_windows <= 0:
         raise ValueError("total_windows must be positive")
     if not 0.0 < ratio <= 1.0:
-        raise ValueError("coreg_train_window_ratio must be in (0, 1]")
+        raise ValueError("recore_train_window_ratio must be in (0, 1]")
     if ratio == 1.0:
         return np.arange(total_windows, dtype=np.int64)
 
